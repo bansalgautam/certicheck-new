@@ -6,8 +6,10 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const LoginComponent = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { toast, dismiss } = useToast();
@@ -15,6 +17,7 @@ const LoginComponent = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     const response = await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -40,6 +43,7 @@ const LoginComponent = () => {
       setTimeout(() => {
         dismiss(toastId.id);
       }, 3000);
+      setLoading(false);
     }
   };
 
@@ -71,7 +75,8 @@ const LoginComponent = () => {
             required
           />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           Login
         </Button>
       </form>
