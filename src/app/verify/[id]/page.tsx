@@ -7,7 +7,7 @@ import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
 
 export default function IdPage() {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
   const params = useParams();
   const { id } = params;
 
